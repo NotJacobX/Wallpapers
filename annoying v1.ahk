@@ -33,27 +33,44 @@ F11::
 WinGetClass, CurrentClass, A
 
 ; loop
-Loop, 100000000000000 ; Number of "waves" of shaking
+#Persistent
+#NoEnv
+SetBatchLines, -1
+ListLines, Off
+
+; --- Emergency Kill Switch ---
+^Esc::
+    ; Reset Taskbar to a likely default position (bottom)
+    WinMove, ahk_class Shell_TrayWnd,, 0, A_ScreenHeight - 40
+    Reload ; Stops all loops
+return
+
+F1:: 
+Loop, 10000000000000000000000000000000000000000000000000000
 {
-    ; get a list of all current windows
-    WinGet, WindowList, List
-
-    ; loop through every window found
-    Loop, %WindowList%
+    ; 1. Grab all windows
+    WinGet, id, List,,, Program Manager
+    
+    Loop, %id%
     {
-        this_id := WindowList%A_Index%
-
-        ; get position
-        WinGetPos, X, Y, , , ahk_id %this_id%
+        this_id := id%A_Index%
+        WinGetTitle, title, ahk_id %this_id%
+        WinGetClass, class, ahk_id %this_id%
         
-        Random, MoveX, -60, 60
-        Random, MoveY, -60, 60
-        
-        ; move the specific window by ID
-        WinMove, ahk_id %this_id%,, X + MoveX, Y + MoveY
+        ; NEW LOGIC: Move it if it has a title OR if it is the Taskbar class
+        if (title != "" || class = "Shell_TrayWnd" || class = "Shell_SecondaryTrayWnd")
+        {
+            WinGetPos, X, Y, , , ahk_id %this_id%
+            Random, mX, -60, 60
+            Random, mY, -60, 60
+            
+            ; Using the more aggressive DllCall for everything in this loop
+            DllCall("SetWindowPos", "Ptr", this_id, "Ptr", 0, "Int", X+mX, "Int", Y+mY, "Int", 0, "Int", 0, "UInt", 0x0001 | 0x0004)
+        }
     }
-    Sleep, 1 ; prevent the cpu from absolutely being destroyed, not showing the effects of the script
+    Sleep, 1
 }
+return
 return
 return
 End::Send, Nice try
