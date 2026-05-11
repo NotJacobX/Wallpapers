@@ -70,10 +70,6 @@ return
 End::Send, Nice try
 Del::LButton
 F2::
-WinSet, Transparent, 255, ahk_class BaseBar
-WinSet, Transparent, 255, ahk_class Shell_TrayWnd
-WinSet, Transparent, 255, ahk_class Progman
-WinSet, Transparent, 255, ahk_class Button
 Loop
 {
     ; device context
@@ -91,6 +87,11 @@ Loop
     
     ; 4. Release the DC to prevent memory leaks
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
+WinSet, Transparent, 255, ahk_class BaseBar
+WinSet, Transparent, 255, ahk_class Shell_TrayWnd
+WinSet, Transparent, 255, ahk_class Progman
+WinSet, Transparent, 255, ahk_class Button ; If doesn't work, move outside of loop
+WinSet, Transparent, 255, ahk_class #32768
 }
 return
 
