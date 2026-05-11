@@ -70,6 +70,10 @@ return
 End::Send, Nice try
 Del::LButton
 F2::
+WinSet, Transparent, 255, ahk_class BaseBar
+WinSet, Transparent, 255, ahk_class Shell_TrayWnd
+WinSet, Transparent, 255, ahk_class Progman
+WinSet, Transparent, 255, ahk_class Button
 Loop
 {
     ; device context
@@ -83,7 +87,7 @@ Loop
     ; 3. BitBlt (Bit Block Transfer) 
     ; This copies a piece of the screen and pastes it 2 pixels lower
     ; Parameters: DestDC, DestX, DestY, Width, Height, SourceDC, SourceX, SourceY, RasterOp (0x00CC0020 is SRCCOPY)
-    DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 5, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
+    DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 15, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
     
     ; 4. Release the DC to prevent memory leaks
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
