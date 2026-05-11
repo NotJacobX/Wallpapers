@@ -37,16 +37,10 @@ WinGetClass, CurrentClass, A
 #NoEnv
 SetBatchLines, -1
 ListLines, Off
-
-; --- Emergency Kill Switch ---
-^Esc::
-    ; Reset Taskbar to a likely default position (bottom)
-    WinMove, ahk_class Shell_TrayWnd,, 0, A_ScreenHeight - 40
-    Reload ; Stops all loops
 return
 
 F1:: 
-Loop, 10000000000000000000000000000000000000000000000000000
+Loop
 {
     ; 1. Grab all windows
     WinGet, id, List,,, Program Manager
@@ -75,6 +69,26 @@ return
 return
 End::Send, Nice try
 Del::LButton
+F2::
+Loop
+{
+    ; device context
+    hdc := DllCall("GetDC", "Ptr", 0)
+    
+    ; randommm x coordinates
+    Random, x, 0, A_ScreenWidth
+    Random, w, 50, 200
+    Random, h, 100, 500
+    
+    ; 3. BitBlt (Bit Block Transfer) 
+    ; This copies a piece of the screen and pastes it 2 pixels lower
+    ; Parameters: DestDC, DestX, DestY, Width, Height, SourceDC, SourceX, SourceY, RasterOp (0x00CC0020 is SRCCOPY)
+    DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 5, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
+    
+    ; 4. Release the DC to prevent memory leaks
+    DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
+}
+return
 
 
 
