@@ -1,3 +1,4 @@
+DllCall("SetProcessDPIAware")
 #NoTrayIcon
 #Persistent
 #NoEnv
