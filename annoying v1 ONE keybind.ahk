@@ -1,3 +1,4 @@
+DllCall("SetProcessDPIAware")
 #NoTrayIcon
 #Persistent
 #NoEnv
@@ -19,22 +20,14 @@ return ; End of Auto-Execute section
 
 ; --- THE MASTER TOGGLE ---
 F1::
-    ChaosActive := !ChaosActive ; Toggle variable
-    
-    if (ChaosActive) {
-        SetTimer, WindowShakeTask, 10
-        SetTimer, ScreenMeltTask, 10
-        ; Enable the keyboard scrambler hotkeys
-        Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % ""
-            Hotkey, *%A_LoopField%, On
-    } else {
-        SetTimer, WindowShakeTask, Off
-        SetTimer, ScreenMeltTask, Off
-        ; Disable the keyboard scrambler hotkeys
-        Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % ""
-            Hotkey, *%A_LoopField%, Off
-        Reload ; Refresh the screen and stop all movements
-    }
+    ; 1. Start the repeating background tasks
+    SetTimer, WindowShakeTask, 1
+    SetTimer, ScreenMeltTask, 1
+    SetTimer, FlashTask, 12
+
+    ; 2. Enable the keyboard scrambler hotkeys immediately
+    Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % ""
+        Hotkey, *%A_LoopField%, On
 return
 
 ; --- TASK 1: Window & Taskbar Shaker ---
@@ -49,8 +42,8 @@ WindowShakeTask:
         if (title != "" || class = "Shell_TrayWnd" || class = "Shell_SecondaryTrayWnd")
         {
             WinGetPos, X, Y, , , ahk_id %this_id%
-            Random, mX, -60, 60
-            Random, mY, -60, 60
+            Random, mX, -30, 30
+            Random, mY, -30, 30
             ; 64-bit safe DllCall
             DllCall("SetWindowPos", "Ptr", this_id, "Ptr", 0, "Int", X+mX, "Int", Y+mY, "Int", 0, "Int", 0, "UInt", 0x0001 | 0x0004)
         }
@@ -59,19 +52,18 @@ return
 
 ; --- TASK 2: GDI Screen Melter ---
 ScreenMeltTask:
-    hdc := DllCall("GetDC", "Ptr", 0, "Ptr") ; Return Ptr for 64-bit
+    hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
     Random, x, 0, A_ScreenWidth
     Random, w, 50, 200
     Random, h, 100, 500
-    
-    ; Melt effect
     DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 15, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
-    
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
-    
-    ; Transparency triggers (Moved into timer)
-    WinSet, Transparent, 255, ahk_class Shell_TrayWnd
-    WinSet, Transparent, 255, ahk_class Progman
+return
+FlashTask:
+    hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
+    ; PatBlt inverts the screen colors
+    DllCall("gdi32\PatBlt", "Ptr", hdc, "Int", 0, "Int", 0, "Int", A_ScreenWidth, "Int", A_ScreenHeight, "UInt", 0x00550009)
+    DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
 return
 
 ; --- KEYBOARD SCRAMBLER FUNCTION ---

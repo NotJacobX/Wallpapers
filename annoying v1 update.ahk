@@ -28,7 +28,7 @@ ScreenMelt:
     Random, x, 0, A_ScreenWidth
     Random, w, 50, 200
     Random, h, 100, 500
-    DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 2, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
+    DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 15, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
 return
 
