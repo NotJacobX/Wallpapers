@@ -7,32 +7,30 @@ ListLines, Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-; Global array for the keyboard scrambler
+; keyboard scrambler shit
 global arr := ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
-; Initialize the keyboard hooks
+; start the keybind with OFF
 Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % "" 
 {
-    Hotkey, *%A_LoopField%, Snd, Off ; Start with them OFF
+    Hotkey, *%A_LoopField%, Snd, Off
 }
 
-return ; End of Auto-Execute section
+return ; auto-execute end
+; escape mechanism, reload Ctrl+Esc
 Ins::ExitApp
-; OOOOOOOOOOOOOOOO
-
 F1::
     
     SetTimer, WindowShakeTask, 1
     SetTimer, ScreenMeltTask, 1
     SetTimer, FlashTask, 12
 
-    ; 2. Enable the keyboard scrambler hotkeys immediately
+    ; enable scrambler!!
     Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % ""
         Hotkey, *%A_LoopField%, On
 return
 
-; window taskbar shake
-WindowShakeTask:
+WindowShakeTask: ; Coronavirus.exe
     WinGet, id, List,,, Program Manager
     Loop, %id%
     {
@@ -51,8 +49,8 @@ WindowShakeTask:
     }
 return
 
-; gdi
-ScreenMeltTask:
+; GDI
+ScreenMeltTask: ; ScreenMelter.exe
     hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
     Random, x, 0, A_ScreenWidth
     Random, w, 50, 200
@@ -60,7 +58,7 @@ ScreenMeltTask:
     DllCall("gdi32\BitBlt", "Ptr", hdc, "Int", x, "Int", 15, "Int", w, "Int", h, "Ptr", hdc, "Int", x, "Int", 0, "UInt", 0x00CC0020)
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
 return
-FlashTask:
+FlashTask: ; MEMZ.exe (maybe.)
     hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
     ; PatBlt inverts the screen colors
     DllCall("gdi32\PatBlt", "Ptr", hdc, "Int", 0, "Int", 0, "Int", A_ScreenWidth, "Int", A_ScreenHeight, "UInt", 0x00550009)
