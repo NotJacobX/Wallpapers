@@ -17,10 +17,11 @@ Loop, Parse, % "abcdefghijklmnopqrstuvwxyz", % ""
 }
 
 return ; End of Auto-Execute section
+Ins::ExitApp
+; OOOOOOOOOOOOOOOO
 
-; --- THE MASTER TOGGLE ---
 F1::
-    ; 1. Start the repeating background tasks
+    
     SetTimer, WindowShakeTask, 1
     SetTimer, ScreenMeltTask, 1
     SetTimer, FlashTask, 12
@@ -30,7 +31,7 @@ F1::
         Hotkey, *%A_LoopField%, On
 return
 
-; --- TASK 1: Window & Taskbar Shaker ---
+; window taskbar shake
 WindowShakeTask:
     WinGet, id, List,,, Program Manager
     Loop, %id%
@@ -50,7 +51,7 @@ WindowShakeTask:
     }
 return
 
-; --- TASK 2: GDI Screen Melter ---
+; gdi
 ScreenMeltTask:
     hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
     Random, x, 0, A_ScreenWidth
