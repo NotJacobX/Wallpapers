@@ -22,6 +22,8 @@ return
 F3::
     SetTimer, Flash, 3 ; Run every 3ms
 return
+F4::
+    SetTimer, Tunnel, 4 ; Run every 4ms
 ; --- THE ACTUAL EFFECTS (No Loops inside here!) ---
 
 ScreenMelt:
@@ -51,5 +53,21 @@ Flash:
     hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
     ; PatBlt inverts the screen colors
     DllCall("gdi32\PatBlt", "Ptr", hdc, "Int", 0, "Int", 0, "Int", A_ScreenWidth, "Int", A_ScreenHeight, "UInt", 0x00550009)
+    DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
+return
+Tunnel:
+    hdc := DllCall("GetDC", "Ptr", 0, "Ptr")
+    
+    ; Shrinks the whole screen inward by 20 pixels on all sides
+    ; Parameters: DestDC, X, Y, Width, Height, SrcDC, SrcX, SrcY, SrcWidth, SrcHeight, RasterOp
+    DllCall("gdi32\StretchBlt"
+        , "Ptr", hdc
+        , "Int", 20, "Int", 20
+        , "Int", A_ScreenWidth - 40, "Int", A_ScreenHeight - 40
+        , "Ptr", hdc
+        , "Int", 0, "Int", 0
+        , "Int", A_ScreenWidth, "Int", A_ScreenHeight
+        , "UInt", 0x00CC0020) ; SRCCOPY
+        
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
 return
