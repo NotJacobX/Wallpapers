@@ -37,7 +37,7 @@ Distort: ; MEMZ.exe tunnel, again.
         , "Int", A_ScreenHeight               ; Full screen height
         , "Ptr", hdc
         , "Int", 0, "Int", 0                  ; Source coordinates (original screen position)
-        , "UInt", 0x00EE0086)                 ; SRCPAINT RasterOp
+        , "UInt", 0x008800C6)                 ; SRCPAINT (0x00EE0086) RasterOp ; Change to SRCAND (0x008800C6) for darker effect
         
     ; 4. Free up the context handle
     DllCall("ReleaseDC", "Ptr", 0, "Ptr", hdc)
