@@ -1,0 +1,5 @@
+xterm*background: black
+xterm*foreground: white
+xterm*faceName: Fira Code
+xterm*faceSize: 11
+! xrdb ~/.Xresources, oh and add xrdb ~/.Xresources to .xinitrc, or yk get urxvt hahahaha config soon
